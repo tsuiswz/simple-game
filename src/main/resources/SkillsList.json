@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Slash",
+    "skillType": [
+      "SimpleAttack"
+    ], //as opposed to EffectAttack or MultiAttack or HealandBuff
+    "power": 1.2,
+    "stat": "Strength",
+    "coolDown": 2,
+    "type": [
+      "Attack",
+      "Strength",
+      "Single Time" //as opposed to multihit, multiheal, overtime skills
+    ],
+    "accuracy": 90,
+    "description": "Like a point guard.",
+    "hitMessage": [
+      "Easy layup!",
+      "And one!"
+    ],
+    "missMessage": [
+      "You're not a shooter."
+    ],
+    "parryMessage": [
+      "You got blocked!"
+    ]
+  },
+
+  {
+    "name": "Tackle",
+    "skillType": [
+      "effectAttack"
+    ], //as opposed to EffectAttack, MultiAttack, and/or SelfBuff
+    "power": 1.0,
+    "stat": "Strength",
+    "coolDown": 1,
+    "type": [
+      "effectAttack",
+      "Strength",
+      "Single Time", //as opposed to multihit, multiheal, overtime skills
+      "Self Damage"
+    ],
+    "accuracy": 85,
+    "description": "Like the basic pokemon attack, except you might hurt yourself in the process.",
+    "hitMessage": [
+      "I think you felt that one too."
+    ],
+    "missMessage": [
+      "Try hitting the enemy next time.",
+      "Use your eyes next time."
+    ],
+    "parryMessage": [
+      "You bounced off right off!"
+    ]
+  }
+]
