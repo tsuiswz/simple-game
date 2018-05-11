@@ -1,5 +1,6 @@
 package rpggame;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Character {
@@ -15,9 +16,9 @@ public class Character {
     private int baseIntelligence;
     private int baseLuck;
 
-    private List<Skill> skills;
-    private List<Effect> preEffects;
-    private List<Effect> postEffects;
+    private ArrayList<Skill> skills;
+    private ArrayList<Effect> preEffects;
+    private ArrayList<Effect> postEffects;
 
     private int temporaryMaxHealthPoint;
     private int temporaryDefence;
@@ -97,10 +98,10 @@ public class Character {
     public void setBaseDexterity(int n){baseDexterity = n;}
     public void setBaseIntelligence(int n){baseIntelligence = n;}
     public void setBaseLuck(int n){ baseLuck = n;}
-    public void setSkills(List<Skill> newSkills) {skills = newSkills;}
-    public void setPreEffects(List<Effect> newEffects) {preEffects = newEffects;}
+    public void setSkills(ArrayList<Skill> newSkills) {skills = newSkills;}
+    public void setPreEffects(ArrayList<Effect> newEffects) {preEffects = newEffects;}
     public void addPreEffect(Effect e) {preEffects.add(e);}
-    public void setPostEffects(List<Effect> newEffects) {postEffects = newEffects;}
+    public void setPostEffects(ArrayList<Effect> newEffects) {postEffects = newEffects;}
     public void addPostEffect(Effect e) {postEffects.add(e);}
     public void setBasePiety(int n){basePiety = n;}
     public void setBaseSin(int n){baseSin = n;}
@@ -164,6 +165,10 @@ public class Character {
 
     public boolean isPlayer() {return isPlayer;}
 
+    public void equipSkill(Skill s) {
+        s.setCharacter(this);
+        skills.add(s);
+    }
     /* scrapped stuff
     public boolean isHit(Character hitter, int special) {
         if (special == -1) {

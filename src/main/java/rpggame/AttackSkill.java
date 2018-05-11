@@ -1,18 +1,63 @@
 package rpggame;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class AttackSkill extends Skill {
+    /*
+    creates attack skill
+    Requires:
+    name
+    type
+    attackType
+    powerMultiplier
+    statMultiplier
+    accuracy
+    cooldown
+     */
+
+    public AttackSkill(String name,
+                       ArrayList<String> type,
+                       String attackType,
+                       double powerMultiplier,
+                       String statMultiplier,
+                       int accuracy,
+                       int cooldown,
+                       String description,
+                       ArrayList<String> hitMessage,
+                       ArrayList<String> missMessage,
+                       ArrayList<String> parryMessage,
+                       ArrayList<String> enemyHitMessage,
+                       ArrayList<String> enemyMissMessage,
+                       ArrayList<String> enemyParryMessage) {
+        setName(name);
+        setSkillType("AttackSkill");
+        setType(type);
+        setAttackType(attackType);
+        setPowerMultiplier(powerMultiplier);
+        setStatMultiplier(statMultiplier);
+        setAccuracy(accuracy);
+        setCoolDown(cooldown);
+        setCurrentCoolDown(0);
+        setDescription(description);
+
+        setHitMessage(hitMessage);
+        setMissMessage(missMessage);
+        setParryMessage(parryMessage);
+
+        setEnemyHitMessage(enemyHitMessage);
+        setEnemyMissMessage(enemyMissMessage);
+        setEnemyParryMessage(enemyParryMessage);
+    }
     public boolean activate(){
         if (offCooldown()) {
-            activateCoolDown();
+            activateCooldown();
             useSkillMessage();
             attack();
-            effect();
             return true;
         }
         if (getCharacter().isPlayer()) {
-            onCoolDownMessage();
+            onCooldownMessage();
         }
         return false;
     }

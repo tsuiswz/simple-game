@@ -1,10 +1,8 @@
 package rpggame;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class SubtleInsult extends AttackSkill {
+public class SubtleInsult {
+    /*
     public SubtleInsult(Character c) {
         setCharacter(c);
         setName("Subtle Insult");
@@ -47,7 +45,7 @@ public class SubtleInsult extends AttackSkill {
 
     public boolean activate() {
         if (offCooldown()) {
-            activateCoolDown();
+            activateCooldown();
             useSkillMessage();
             if (attack()) {
                 effect();
@@ -55,7 +53,7 @@ public class SubtleInsult extends AttackSkill {
             return true;
         }
         if (getCharacter().isPlayer()) {
-            onCoolDownMessage();
+            onCooldownMessage();
         }
         return false;
     }
@@ -72,4 +70,5 @@ public class SubtleInsult extends AttackSkill {
                     getCharacter().getEnemy()));
         }
     }
+    */
 }

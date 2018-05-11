@@ -1,9 +1,7 @@
 package rpggame;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class PencilStab extends AttackSkill {
+public class PencilStab {
+    /*
     public PencilStab(Character c){
         setCharacter(c);
         setName("Pencil Stab");
@@ -56,4 +54,5 @@ public class PencilStab extends AttackSkill {
             setCurrentCoolDown(3);
         }
     }
+    */
 }

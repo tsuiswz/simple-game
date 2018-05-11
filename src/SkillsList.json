@@ -1,0 +1,42 @@
+{
+  "list": [
+    {
+      "name": "Slash",
+      "skillType": "AttackSkill",
+      //as opposed to AttackWithOnHitEffect or AttackWithEffect or HealWithEffect
+
+      "type": [
+        "Attack",
+        "Strength",
+        "Single Time"
+        //as opposed to multihit, multiheal, overtime skills
+      ],
+      "attackType": "Physical",
+      "powerMultiplier": 1.2,
+      "accuracy": 90,
+      "cooldown": 0,
+      "statMultiplier": "Strength",
+      "description": "Like a point guard.",
+      "hitMessage": [
+        "Easy layup! (hit)",
+        "And one! (hit)"
+      ],
+      "missMessage": [
+        "You're not a shooter. (miss)"
+      ],
+      "parryMessage": [
+        "You got blocked! (parried)"
+      ],
+      "enemyHitMessage": [
+        "Easy layup! (enemy hit)",
+        "And one! (enemy hit)"
+      ],
+      "enemyMissMessage": [
+        "That one's not a shooter (enemy miss)."
+      ],
+      "enemyParryMessage": [
+        "You blocked (parry)!"
+      ]
+    }
+  ]
+}

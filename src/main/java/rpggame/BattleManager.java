@@ -1,7 +1,12 @@
 package rpggame;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class BattleManager {
 
@@ -39,7 +44,7 @@ public class BattleManager {
 
     LEVEL UP SYSTEM: LEVEL UP HEALS YOU (OR NOT)
                      GIVES RANDOM UPGRADE CHANCE (EVERY 10 LVLS CHOOSE AN ULTIMATE SKILL, LIMITED TO ONE AT A TIME)
-                                                 (EVERY LVL CHOOSE TO UPGRADE A CURRENT SKILL OR ACQUIRE NEXT SKILL)
+                                                 (EVERY LVL CHOOSE TO UPGRADE A CURRENT SKILL OR ACQUIRE NEW SKILL)
                      CLASS CHANGE AT LVL X1, X2, X3, OPENING SKILL POOLS AT HIGHER TIER JOBS/CLASS
 
     ENEMY GENERATION: SELECT RANDOMLY FROM A MAP?
@@ -66,6 +71,7 @@ public class BattleManager {
 
      */
     public static void main(String[] args) {
+
         Player player1 = new Player("Player 1",1, 0, 100, 100, 2, 5, 1, 5, 1, 10, 2, 10, 1, 10, 1, 70, 1);
         Player player2 = new Player("Player 2",1, 0, 100, 100, 2, 5, 1, 5, 1, 10, 2, 10, 1, 10, 1, 1, 1);
         Player player3 = new Player("Player 3",1, 0, 100, 100, 2, 5, 1, 5, 1, 10, 2, 10, 1, 10, 1, 1, 1);
@@ -73,22 +79,88 @@ public class BattleManager {
         //Battle testBattle2 = new Battle(player1, player2);
         player2.setIsPlayer(false);
         player3.setIsPlayer(false);
-        List<Skill> skills1 = new ArrayList<>();
-        List<Skill> skills2 = new ArrayList<>();
-        List<Skill> skills3 = new ArrayList<>();
-        skills1.add(new Flail(player1));
-        skills1.add(new SubtleInsult(player1));
-        skills1.add(new PencilStab(player1));
-        skills2.add(new Flail(player2));
-        skills2.add(new SubtleInsult(player2));
+        ArrayList<Skill> skills1 = new ArrayList<>();
+        ArrayList<Skill> skills2 = new ArrayList<>();
+        ArrayList<Skill> skills3 = new ArrayList<>();
+        //skills1.add(new Flail(player1));
+        //skills1.add(new SubtleInsult(player1));
+        //skills1.add(new PencilStab(player1));
+        //skills2.add(new Flail(player2));
+        //skills2.add(new SubtleInsult(player2));
         player1.setSkills(skills1);
         player2.setSkills(skills2);
         player3.setSkills(skills3);
+        player1.equipSkill((AttackSkill) getSkill("Slash"));
+        System.out.println(getSkill("Slash").getName()+" "+getSkill("Slash").getDescription());
         while (true) {
             player1.reset();
             player2.reset();
             player3.reset();
             testBattle.startBattle();
+        }
+
+
+    }
+
+    private static Skill getSkill(String name){
+        Gson gson = new Gson();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader("src/SkillsList.json"));
+            SkillList skill = gson.fromJson(br, SkillList.class);
+
+            if (skill!=null) {
+                for (int i=0; i<skill.list.size(); i++) {
+                    if (skill.list.get(i).getName().equals(name)){
+                        return correctSkillForm(skill.list.get(i));
+                    }
+                }
+            }
+            return null;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (br!=null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private static Skill correctSkillForm(Skill s) {
+        switch (s.getSkillType()) {
+            case "AttackSkill": return new AttackSkill(s.getName(),
+                                                   s.getType(),
+                                                   s.getAttackType(),
+                                                   s.getPowerMultiplier(),
+                                                   s.getStatMultiplier(),
+                                                   s.getAccuracy(),
+                                                   s.getCooldown(),
+                                                   s.getDescription(),
+                                                   s.getHitMessage(),
+                                                   s.getMissMessage(),
+                                                   s.getParryMessage(),
+                                                   s.getEnemyHitMessage(),
+                                                   s.getEnemyMissMessage(),
+                                                   s.getEnemyParryMessage());
+            default: return new AttackSkill(s.getName(),
+                    s.getType(),
+                    s.getAttackType(),
+                    s.getPowerMultiplier(),
+                    s.getStatMultiplier(),
+                    s.getAccuracy(),
+                    s.getCooldown(),
+                    s.getDescription(),
+                    s.getHitMessage(),
+                    s.getMissMessage(),
+                    s.getParryMessage(),
+                    s.getEnemyHitMessage(),
+                    s.getEnemyMissMessage(),
+                    s.getEnemyParryMessage());
         }
     }
 }
