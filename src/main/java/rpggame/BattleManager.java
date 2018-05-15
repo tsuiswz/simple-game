@@ -77,6 +77,7 @@ public class BattleManager {
         Player player3 = new Player("Player 3",1, 0, 100, 100, 2, 5, 1, 5, 1, 10, 2, 10, 1, 10, 1, 1, 1);
         Battle testBattle = new Battle(player1, player3);
         //Battle testBattle2 = new Battle(player1, player2);
+        player1.setIsPlayer(false);
         player2.setIsPlayer(false);
         player3.setIsPlayer(false);
         ArrayList<Skill> skills1 = new ArrayList<>();
@@ -90,7 +91,10 @@ public class BattleManager {
         player1.setSkills(skills1);
         player2.setSkills(skills2);
         player3.setSkills(skills3);
-        player1.equipSkill((AttackSkill) getSkill("Slash"));
+        player1.equipSkill(getSkill("Slash"));
+        player1.equipSkill(getSkill("Yell At"));
+        player3.equipSkill(getSkill("Slash"));
+        player3.equipSkill(getSkill("Yell At"));
         System.out.println(getSkill("Slash").getName()+" "+getSkill("Slash").getDescription());
         while (true) {
             player1.reset();

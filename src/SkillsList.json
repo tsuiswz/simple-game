@@ -14,7 +14,7 @@
       "attackType": "Physical",
       "powerMultiplier": 1.2,
       "accuracy": 90,
-      "cooldown": 0,
+      "cooldown": 1,
       "statMultiplier": "Strength",
       "description": "Like a point guard.",
       "hitMessage": [
@@ -36,6 +36,45 @@
       ],
       "enemyParryMessage": [
         "You blocked (parry)!"
+      ]
+    },
+
+    {
+      "name": "Yell At",
+      "skillType": "AttackSkill",
+      //as opposed to AttackWithOnHitEffect or AttackWithEffect or HealWithEffect
+
+      "type": [
+        "Attack",
+        "Intelligence",
+        "Single Time"
+        //as opposed to multihit, multiheal, overtime skills
+      ],
+      "attackType": "Magical",
+      "powerMultiplier": 1.2,
+      "accuracy": 90,
+      "cooldown": 2,
+      "statMultiplier": "Intelligence",
+      "description": "Nothing speaks more about your intelligence than to yell at your foes.",
+      "hitMessage": [
+        "AAAHHHHHHH!!! (hit)",
+        "YEEEEEEEEE!!! (hit)"
+      ],
+      "missMessage": [
+        "You lost your voice. (miss)"
+      ],
+      "parryMessage": [
+        "They yelled back. (parried)"
+      ],
+      "enemyHitMessage": [
+        "RAAAWWRRXD! (enemy hit)",
+        "REEEEEEEEE! (enemy hit)"
+      ],
+      "enemyMissMessage": [
+        "...? (enemy miss)."
+      ],
+      "enemyParryMessage": [
+        "You intelligently countered with a deconstructive sound wave by yelling back (parry)!"
       ]
     }
   ]

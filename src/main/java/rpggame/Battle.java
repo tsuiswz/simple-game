@@ -190,11 +190,20 @@ public class Battle {
     public void computerTurn() {
         System.out.println(getCurrentTurnsChar().getName()+" turn:");
         if (isSkillsAvailable()) {
+            ArrayList<Skill> skills = getCurrentTurnsChar().getSkills();
+            ArrayList<Integer> skillsToChoose = new ArrayList<>();
+
+            for (int i=0; i<skills.size(); i++) {
+                Skill skill = skills.get(i);
+                if (skill.offCooldown()) {
+                    skillsToChoose.add(i);
+                }
+            }
+
             Random rand = new Random();
-            int n = rand.nextInt(getCurrentTurnsChar().getSkills().size());
-            if (getCurrentTurnsChar().getSkills().get(n).activate()) {
-                endOfTurn = true;
-            } else {computerTurn();}
+            int n = rand.nextInt(skillsToChoose.size());
+            skills.get(skillsToChoose.get(n)).activate();
+            endOfTurn = true;
         } else {
             System.out.println(getCurrentTurnsChar().getName() + " did not do anything.");
             endOfTurn = true;
