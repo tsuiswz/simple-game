@@ -56,7 +56,7 @@ public class Battle {
         activateAll(getCurrentTurnsChar().getPostEffects());
         trashOverdueEffects(getCurrentTurnsChar().getPostEffects());
 
-        //Used for checking list of post effects
+        //Used for checking list of post effects (Moved down)
         /*for (Effect e: getCurrentTurnsChar().getPostEffects()) {
             System.out.println(e.getName());
             System.out.println(e.getTurnsLeft());
@@ -192,12 +192,86 @@ public class Battle {
         if (isSkillsAvailable()) {
             Random rand = new Random();
             int n = rand.nextInt(getCurrentTurnsChar().getSkills().size());
-            getCurrentTurnsChar().getSkills().get(n).activate();
-            endOfTurn = true;
+            if (getCurrentTurnsChar().getSkills().get(n).activate()) {
+                endOfTurn = true;
+            } else {computerTurn();}
         } else {
             System.out.println(getCurrentTurnsChar().getName() + " did not do anything.");
             endOfTurn = true;
         }
+    }
+
+    /*
+    One layer deeper of thinking in CPU turn
+     */
+
+    public void computerTier2Turn() {
+        System.out.println(getCurrentTurnsChar().getName()+" turn:");
+        if (isSkillsAvailable()) {
+            ArrayList<Skill> skills = getCurrentTurnsChar().getSkills();
+            List<Integer> skillsToChoose = new ArrayList<Integer>();
+
+            // If debuffed, add cleanse skills to the list of skills to choose from
+            if (isCharDebuffed(getCurrentTurnsChar())) {
+                for (int i = 0; i<getCurrentTurnsChar().getSkills().size(); i++) {
+                    Skill skill = skills.get(i);
+                    if (skill.getType().contains("Cleanse") && skill.offCooldown()) {
+                        skillsToChoose.add(i);
+                    }
+                }
+            }
+
+            // If damaged, add heal skills to the list of skills to choose from
+            if (isCharDamaged(getCurrentTurnsChar())) {
+                for (int i = 0; i<getCurrentTurnsChar().getSkills().size(); i++) {
+                    Skill skill = skills.get(i);
+                    if (skill.getType().contains("Heal") && skill.offCooldown()) {
+                        skillsToChoose.add(i);
+                    }
+                }
+            }
+
+            // If not damaged or debuffed, just add all skills off cd to skills to choose
+            if (skills.isEmpty()) {
+                Random rand = new Random();
+                for (int i=0; i<skills.size(); i++) {
+                    Skill skill = skills.get(i);
+                    if (skill.offCooldown()) {
+                        skillsToChoose.add(i);
+                    }
+                }
+            }
+
+            // Randomly select a skill to activate from the list of skills to choose.
+            // The list of skills to choose is a list of indexes, so if say a skill heals AND cleanses it should
+            // have a higher chance of being selected (if off cd).
+            Random rand = new Random();
+            int n = rand.nextInt(skillsToChoose.size());
+            skills.get(skillsToChoose.get(n)).activate();
+            endOfTurn = true;
+
+        } else {
+            System.out.println(getCurrentTurnsChar().getName() + " did not do anything.");
+            endOfTurn = true;
+        }
+    }
+
+    public boolean isCharDebuffed(Character c) {
+        for (Effect e: c.getPostEffects()) {
+            if (e.getType().equals("Debuff")) {
+                return true;
+            }
+        }
+        for (Effect e: c.getPreEffects()) {
+            if (e.getType().equals("Debuff")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isCharDamaged(Character c) {
+        return c.getCurrentHealthPoint()<c.getCurrentMaxHealthPoint();
     }
 
     public static boolean isInteger(String str) {

@@ -4,13 +4,13 @@ public class DamageOverTimeEffect extends Effect {
     private int damage;
     private String attackType;
     public DamageOverTimeEffect(String name, int turns, int damage, Character giver, Character receiver) {
-        super(name, turns, giver, receiver);
+        super(name, turns, giver, receiver, "Damage Over Time");
         this.damage = damage;
         this.attackType = "True";
     }
 
     public DamageOverTimeEffect(String name, int turns, int damage, Character giver, Character receiver, String attackType) {
-        super(name, turns, giver, receiver);
+        super(name, turns, giver, receiver, "Damage Over Time");
         this.damage = damage;
         this.attackType = attackType;
     }

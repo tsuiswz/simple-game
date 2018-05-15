@@ -4,7 +4,7 @@ public class DebuffEffect extends Effect {
     private int power;
     private String statType;
     public DebuffEffect(String name, int turns, int power, String statType, Character giver, Character receiver) {
-        super(name, turns, giver, receiver);
+        super(name, turns, giver, receiver, "Debuff");
         this.power = power;
         this.statType = statType;
     }

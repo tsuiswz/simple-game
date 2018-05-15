@@ -4,7 +4,7 @@ public class BuffEffect extends Effect {
     private int power;
     private String statType;
     public BuffEffect(String name, int turns, int power, String statType, Character giver, Character receiver) {
-        super(name, turns, giver, receiver);
+        super(name, turns, giver, receiver, "Buff");
         this.power = power;
         this.statType = statType;
     }

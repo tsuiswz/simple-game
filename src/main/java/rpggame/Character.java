@@ -1,7 +1,6 @@
 package rpggame;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Character {
     private String name;
@@ -64,9 +63,9 @@ public class Character {
     public int getBaseDexterity(){return baseDexterity;}
     public int getBaseIntelligence(){return baseIntelligence;}
     public int getBaseLuck(){return baseLuck;}
-    public List<Skill> getSkills() {return skills;}
-    public List<Effect> getPreEffects() {return preEffects;}
-    public List<Effect> getPostEffects() {return postEffects;}
+    public ArrayList<Skill> getSkills() {return skills;}
+    public ArrayList<Effect> getPreEffects() {return preEffects;}
+    public ArrayList<Effect> getPostEffects() {return postEffects;}
     public int getBasePiety(){return basePiety;}
     public int getBaseSin(){return baseSin;}
     public int getBaseWillpower(){return baseWillpower;}
