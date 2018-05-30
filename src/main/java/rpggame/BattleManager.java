@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BattleManager {
 
@@ -70,9 +71,49 @@ public class BattleManager {
     SOME SORT OF LEVEL/FLOOR/CLASSROOM/ PROGRESSION
 
      */
+
+    int DEFAULT_BASE_MAX_HEALTH_POINT = 100;
+    int DEFAULT_GROWTH_BASE_MAX_HEALTH_POINT = 2;
+    int DEFAULT_BASE_DEFENCE = 5;
+    int DEFAULT_GROWTH_DEFENCE = 1;
+    int DEFAULT_BASE_RESISTANCE = 5;
+    int DEFAULT_GROWTH_RESISTANCE = 1;
+    int DEFAULT_BASE_STRENGTH = 10;
+    int DEFAULT_GROWTH_STRENGTH = 2;
+    int DEFAULT_BASE_DEXTERITY = 10;
+    int DEFAULT_GROWTH_DEXTERITY = 2;
+    int DEFAULT_BASE_INTELLIGENCE = 10;
+    int DEFAULT_GROWTH_INTELLIGENCE = 2;
+    int DEFAULT_BASE_LUCK = 0;
+    int DEFAULT_GROWTH_LUCK = 0;
+
+    int DEFAULT_STAT_VARIANCE = 20;
+    int DEFAULT_STAT_LOWER_LIMIT = 90;
+
+    int DEFAULT_AMOUNT_OF_SKILLS = 2;
+
     public static void main(String[] args) {
 
-        Player player1 = new Player("Player 1",1, 0, 100, 100, 2, 5, 1, 5, 1, 10, 2, 10, 1, 10, 1, 70, 1);
+        Player player1 = new Player(
+                "Player 1",
+                1,
+                0,
+                100,
+                100,
+                2,
+                5,
+                1,
+                5,
+                1,
+                10,
+                2,
+                10,
+                1,
+                10,
+                1,
+                70,
+                1);
+
         Player player2 = new Player("Player 2",1, 0, 100, 100, 2, 5, 1, 5, 1, 10, 2, 10, 1, 10, 1, 1, 1);
         Player player3 = new Player("Player 3",1, 0, 100, 100, 2, 5, 1, 5, 1, 10, 2, 10, 1, 10, 1, 1, 1);
         Battle testBattle = new Battle(player1, player3);
@@ -166,5 +207,60 @@ public class BattleManager {
                     s.getEnemyMissMessage(),
                     s.getEnemyParryMessage());
         }
+    }
+
+    Character randomEnemyGenerator(int level) {
+        Random rand = new Random();
+
+        int baseMaxHealthPoint = varyNumber(DEFAULT_BASE_MAX_HEALTH_POINT+level*DEFAULT_GROWTH_BASE_MAX_HEALTH_POINT);
+        int growthMaxHealthPoint = varyNumber(DEFAULT_GROWTH_BASE_MAX_HEALTH_POINT);
+
+        int baseDefence = varyNumber(DEFAULT_BASE_DEFENCE+level*DEFAULT_GROWTH_DEFENCE);
+        int baseResistance = varyNumber(DEFAULT_BASE_RESISTANCE+level*DEFAULT_GROWTH_RESISTANCE);
+        int baseStrength = varyNumber(DEFAULT_BASE_STRENGTH+level*DEFAULT_GROWTH_STRENGTH);
+        int baseDexterity = varyNumber(DEFAULT_BASE_DEXTERITY+level*DEFAULT_GROWTH_DEXTERITY);
+        int baseIntelligence = varyNumber(DEFAULT_BASE_INTELLIGENCE+level*DEFAULT_GROWTH_INTELLIGENCE);
+        int baseLuck = varyNumber(DEFAULT_BASE_LUCK+level*DEFAULT_GROWTH_LUCK);
+
+        int growthDefence = varyNumber(DEFAULT_GROWTH_DEFENCE);
+        int growthResistance = varyNumber(DEFAULT_GROWTH_RESISTANCE);
+        int growthStrength = varyNumber(DEFAULT_GROWTH_STRENGTH);
+        int growthDexterity = varyNumber(DEFAULT_GROWTH_DEXTERITY);
+        int growthIntelligence = varyNumber(DEFAULT_GROWTH_INTELLIGENCE);
+        int growthLuck = varyNumber(DEFAULT_GROWTH_LUCK);
+
+        Character enemy = new Player(
+                "Aggressive Student",
+                level,
+                0,
+                baseMaxHealthPoint,
+                baseMaxHealthPoint,
+                growthMaxHealthPoint,
+                baseDefence,
+                growthDefence,
+                baseResistance,
+                growthResistance,
+                baseStrength,
+                growthStrength,
+                baseDexterity,
+                growthDexterity,
+                baseIntelligence,
+                growthIntelligence,
+                baseLuck,
+                growthLuck
+                );
+
+        return enemy;
+    }
+    /*
+    para@: int num
+    Used in randomEnemyGenerator.
+    Takes in a stat number and returns it after varying the value a bit to create randomness
+    so each enemy is produced with different quality.
+     */
+    private int varyNumber(int num) {
+        Random rand = new Random();
+        double n = (DEFAULT_STAT_LOWER_LIMIT + rand.nextInt(DEFAULT_STAT_VARIANCE))/100;
+        return (int) ((n) * (num));
     }
 }
