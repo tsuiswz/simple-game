@@ -109,9 +109,11 @@ public class Skill {
         Random rand = new Random();
         int n = 0;
         try {
-            n = rand.nextInt(character.getCurrentStat("Luck")) + 1;
+            if (character.getCurrentStat("Luck") > 0){
+                n = rand.nextInt(character.getCurrentStat("Luck"));
+            }
         } catch (Exception e) {
-            System.out.println("BAD BOUNDS IN CURRENT ACCURACY");
+            System.out.println("BAD BOUNDS IN CURRENT ACCURACY OF CLASS SKILL");
             System.out.println(character.getCurrentStat("Luck"));}
         return accuracy + character.getAccuracyBonus() + n;
     }

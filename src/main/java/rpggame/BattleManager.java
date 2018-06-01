@@ -72,25 +72,25 @@ public class BattleManager {
 
      */
 
-    int DEFAULT_BASE_MAX_HEALTH_POINT = 100;
-    int DEFAULT_GROWTH_BASE_MAX_HEALTH_POINT = 2;
-    int DEFAULT_BASE_DEFENCE = 5;
-    int DEFAULT_GROWTH_DEFENCE = 1;
-    int DEFAULT_BASE_RESISTANCE = 5;
-    int DEFAULT_GROWTH_RESISTANCE = 1;
-    int DEFAULT_BASE_STRENGTH = 10;
-    int DEFAULT_GROWTH_STRENGTH = 2;
-    int DEFAULT_BASE_DEXTERITY = 10;
-    int DEFAULT_GROWTH_DEXTERITY = 2;
-    int DEFAULT_BASE_INTELLIGENCE = 10;
-    int DEFAULT_GROWTH_INTELLIGENCE = 2;
-    int DEFAULT_BASE_LUCK = 0;
-    int DEFAULT_GROWTH_LUCK = 0;
+    static int DEFAULT_BASE_MAX_HEALTH_POINT = 100;
+    static int DEFAULT_GROWTH_BASE_MAX_HEALTH_POINT = 2;
+    static int DEFAULT_BASE_DEFENCE = 5;
+    static int DEFAULT_GROWTH_DEFENCE = 1;
+    static int DEFAULT_BASE_RESISTANCE = 5;
+    static int DEFAULT_GROWTH_RESISTANCE = 1;
+    static int DEFAULT_BASE_STRENGTH = 10;
+    static int DEFAULT_GROWTH_STRENGTH = 2;
+    static int DEFAULT_BASE_DEXTERITY = 10;
+    static int DEFAULT_GROWTH_DEXTERITY = 2;
+    static int DEFAULT_BASE_INTELLIGENCE = 10;
+    static int DEFAULT_GROWTH_INTELLIGENCE = 2;
+    static int DEFAULT_BASE_LUCK = 0;
+    static int DEFAULT_GROWTH_LUCK = 0;
 
-    int DEFAULT_STAT_VARIANCE = 20;
-    int DEFAULT_STAT_LOWER_LIMIT = 90;
+    static int DEFAULT_STAT_VARIANCE = 20;
+    static int DEFAULT_STAT_LOWER_LIMIT = 90;
 
-    int DEFAULT_AMOUNT_OF_SKILLS = 2;
+    static int DEFAULT_AMOUNT_OF_SKILLS = 2;
 
     public static void main(String[] args) {
 
@@ -111,7 +111,7 @@ public class BattleManager {
                 1,
                 10,
                 1,
-                70,
+                0,
                 1);
 
         Player player2 = new Player("Player 2",1, 0, 100, 100, 2, 5, 1, 5, 1, 10, 2, 10, 1, 10, 1, 1, 1);
@@ -129,7 +129,6 @@ public class BattleManager {
         //skills1.add(new PencilStab(player1));
         //skills2.add(new Flail(player2));
         //skills2.add(new SubtleInsult(player2));
-        player1.setSkills(skills1);
         player2.setSkills(skills2);
         player3.setSkills(skills3);
         player1.equipSkill(getSkill("Slash"));
@@ -137,11 +136,11 @@ public class BattleManager {
         player3.equipSkill(getSkill("Slash"));
         player3.equipSkill(getSkill("Yell At"));
         System.out.println(getSkill("Slash").getName()+" "+getSkill("Slash").getDescription());
+
         while (true) {
             player1.reset();
-            player2.reset();
-            player3.reset();
-            testBattle.startBattle();
+            Battle fight = new Battle(player1, randomEnemyGenerator(1));
+            fight.startBattle();
         }
 
 
@@ -162,6 +161,31 @@ public class BattleManager {
                 }
             }
             return null;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (br!=null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private static Skill getRandomSkill(){
+        Gson gson = new Gson();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader("src/SkillsList.json"));
+            SkillList skill = gson.fromJson(br, SkillList.class);
+
+            Random rand = new Random();
+            int i = rand.nextInt(skill.list.size());
+            return correctSkillForm(skill.list.get(i));
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -209,7 +233,7 @@ public class BattleManager {
         }
     }
 
-    Character randomEnemyGenerator(int level) {
+    private static Character randomEnemyGenerator(int level) {
         Random rand = new Random();
 
         int baseMaxHealthPoint = varyNumber(DEFAULT_BASE_MAX_HEALTH_POINT+level*DEFAULT_GROWTH_BASE_MAX_HEALTH_POINT);
@@ -249,7 +273,11 @@ public class BattleManager {
                 baseLuck,
                 growthLuck
                 );
+        for (int i = 0; i<DEFAULT_AMOUNT_OF_SKILLS; i++) {
+            enemy.equipSkill(getRandomSkill());
+        }
 
+        enemy.setIsPlayer(true);
         return enemy;
     }
     /*
@@ -258,7 +286,7 @@ public class BattleManager {
     Takes in a stat number and returns it after varying the value a bit to create randomness
     so each enemy is produced with different quality.
      */
-    private int varyNumber(int num) {
+    private static int varyNumber(int num) {
         Random rand = new Random();
         double n = (DEFAULT_STAT_LOWER_LIMIT + rand.nextInt(DEFAULT_STAT_VARIANCE))/100;
         return (int) ((n) * (num));

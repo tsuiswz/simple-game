@@ -165,6 +165,9 @@ public class Character {
     public boolean isPlayer() {return isPlayer;}
 
     public void equipSkill(Skill s) {
+        if (getSkills() == null) {
+            setSkills(new ArrayList<>());
+        }
         s.setCharacter(this);
         skills.add(s);
     }
