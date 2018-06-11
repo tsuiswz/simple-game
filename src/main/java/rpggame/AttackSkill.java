@@ -10,6 +10,7 @@ public class AttackSkill extends Skill {
     name
     type
     attackType
+    hits
     powerMultiplier
     statMultiplier
     accuracy
@@ -19,6 +20,7 @@ public class AttackSkill extends Skill {
     public AttackSkill(String name,
                        ArrayList<String> type,
                        String attackType,
+                       int hits,
                        double powerMultiplier,
                        String statMultiplier,
                        int accuracy,
@@ -34,6 +36,7 @@ public class AttackSkill extends Skill {
         setSkillType("AttackSkill");
         setType(type);
         setAttackType(attackType);
+        setHits(hits);
         setPowerMultiplier(powerMultiplier);
         setStatMultiplier(statMultiplier);
         setAccuracy(accuracy);
@@ -62,22 +65,26 @@ public class AttackSkill extends Skill {
         return false;
     }
 
-    public boolean attack() {
-        if (isAttackActivated()) {
-            printAttackMessage();
+    public void attack() {
 
-            getCharacter().getEnemy().takeDamage(calculateDamage(getStatMultiplier()), getAttackType());
-            getCharacter().onHit();
-            getCharacter().getEnemy().onGetHit();
-            return isAttackActivated();
+        for (int i = 0; i<getHits(); i++) {
+            if (isAttackActivated()) {
+                printAttackMessage();
 
-        } else {
-            if (getCharacter().isPlayer()) {
-                System.out.println(getMissMessage());
-            } else {System.out.println(randomMessageSelector(getEnemyMissMessage()));}
-            getCharacter().onMiss();
-            getCharacter().getEnemy().onDodge();
-            return isAttackActivated();}
+                getCharacter().getEnemy().takeDamage(calculateDamage(getStatMultiplier()), getAttackType());
+                getCharacter().onHit();
+                getCharacter().getEnemy().onGetHit();
+
+            } else {
+                if (getCharacter().isPlayer()) {
+                    System.out.println(getMissMessage());
+                } else {
+                    System.out.println(randomMessageSelector(getEnemyMissMessage()));
+                }
+                getCharacter().onMiss();
+                getCharacter().getEnemy().onDodge();
+            }
+        }
     }
 
     public boolean isAttackActivated() {

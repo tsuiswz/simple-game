@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class BattleManager {
@@ -98,52 +97,37 @@ public class BattleManager {
                 "Player 1",
                 1,
                 0,
-                100,
-                100,
+                110,
+                110,
                 2,
                 5,
                 1,
                 5,
                 1,
-                10,
+                12,
                 2,
-                10,
+                12,
                 1,
-                10,
+                12,
                 1,
                 0,
                 1);
 
-        Player player2 = new Player("Player 2",1, 0, 100, 100, 2, 5, 1, 5, 1, 10, 2, 10, 1, 10, 1, 1, 1);
-        Player player3 = new Player("Player 3",1, 0, 100, 100, 2, 5, 1, 5, 1, 10, 2, 10, 1, 10, 1, 1, 1);
-        Battle testBattle = new Battle(player1, player3);
-        //Battle testBattle2 = new Battle(player1, player2);
-        player1.setIsPlayer(false);
-        player2.setIsPlayer(false);
-        player3.setIsPlayer(false);
-        ArrayList<Skill> skills1 = new ArrayList<>();
-        ArrayList<Skill> skills2 = new ArrayList<>();
-        ArrayList<Skill> skills3 = new ArrayList<>();
-        //skills1.add(new Flail(player1));
-        //skills1.add(new SubtleInsult(player1));
-        //skills1.add(new PencilStab(player1));
-        //skills2.add(new Flail(player2));
-        //skills2.add(new SubtleInsult(player2));
-        player2.setSkills(skills2);
-        player3.setSkills(skills3);
+        player1.setIsPlayer(true);
         player1.equipSkill(getSkill("Slash"));
         player1.equipSkill(getSkill("Yell At"));
-        player3.equipSkill(getSkill("Slash"));
-        player3.equipSkill(getSkill("Yell At"));
-        System.out.println(getSkill("Slash").getName()+" "+getSkill("Slash").getDescription());
 
-        while (true) {
+        int score = 0;
+        boolean progress = true;
+        while (progress) {
             player1.reset();
-            Battle fight = new Battle(player1, randomEnemyGenerator(1));
-            fight.startBattle();
+            Battle fight = new Battle(player1, randomEnemyGenerator(player1.getLevel()));
+            progress = fight.startBattle();
+            if (progress == true) {
+                score++;
+            }
         }
-
-
+        System.out.println("Your score is "+score+".");
     }
 
     private static Skill getSkill(String name){
@@ -205,6 +189,7 @@ public class BattleManager {
             case "AttackSkill": return new AttackSkill(s.getName(),
                                                    s.getType(),
                                                    s.getAttackType(),
+                                                   s.getHits(),
                                                    s.getPowerMultiplier(),
                                                    s.getStatMultiplier(),
                                                    s.getAccuracy(),
@@ -216,9 +201,35 @@ public class BattleManager {
                                                    s.getEnemyHitMessage(),
                                                    s.getEnemyMissMessage(),
                                                    s.getEnemyParryMessage());
+            case "AttackWithOnHitEffect": return new AttackWithOnHitEffect(
+                    s.getName(),
+                    s.getType(),
+                    s.getAttackType(),
+                    s.getHits(),
+                    s.getPowerMultiplier(),
+                    s.getStatMultiplier(),
+                    s.getAccuracy(),
+                    s.getCooldown(),
+                    s.getDescription(),
+                    s.getHitMessage(),
+                    s.getMissMessage(),
+                    s.getParryMessage(),
+                    s.getEnemyHitMessage(),
+                    s.getEnemyMissMessage(),
+                    s.getEnemyParryMessage(),
+                    s.getEffect(),
+                    s.getEffectTarget(),
+                    s.getEffectPowerMultiplier(),
+                    s.getEffectStatMultiplier(),
+                    s.getAttackType(),
+                    s.getEffectChance(),
+                    s.getEffectMessage(),
+                    s.getEnemyEffectMessage()
+                    );
             default: return new AttackSkill(s.getName(),
                     s.getType(),
                     s.getAttackType(),
+                    s.getHits(),
                     s.getPowerMultiplier(),
                     s.getStatMultiplier(),
                     s.getAccuracy(),
@@ -277,7 +288,7 @@ public class BattleManager {
             enemy.equipSkill(getRandomSkill());
         }
 
-        enemy.setIsPlayer(true);
+        enemy.setIsPlayer(false);
         return enemy;
     }
     /*
@@ -288,7 +299,7 @@ public class BattleManager {
      */
     private static int varyNumber(int num) {
         Random rand = new Random();
-        double n = (DEFAULT_STAT_LOWER_LIMIT + rand.nextInt(DEFAULT_STAT_VARIANCE))/100;
+        double n = (double)(DEFAULT_STAT_LOWER_LIMIT + rand.nextInt(DEFAULT_STAT_VARIANCE))/ (double) 100;
         return (int) ((n) * (num));
     }
 }

@@ -12,9 +12,10 @@
         //as opposed to multihit, multiheal, overtime skills
       ],
       "attackType": "Physical",
+      "hits": 1,
       "powerMultiplier": 1.2,
       "accuracy": 90,
-      "cooldown": 1,
+      "cooldown": 0,
       "statMultiplier": "Strength",
       "description": "Like a point guard.",
       "hitMessage": [
@@ -51,6 +52,7 @@
         //as opposed to multihit, multiheal, overtime skills
       ],
       "attackType": "Magical",
+      "hits": 1,
       "powerMultiplier": 1.2,
       "accuracy": 90,
       "cooldown": 2,

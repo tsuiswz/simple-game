@@ -24,7 +24,7 @@ public class Battle {
         endOfTurn = false;
     }
 
-    public void startBattle() {
+    public boolean startBattle() {
         battleEnd = false;
         charOneTurn = true;
         endOfTurn = false;
@@ -34,6 +34,7 @@ public class Battle {
         }
         System.out.println("Battle Ended.");
         whoWon();
+        return char1.getCurrentHealthPoint() > 0;
     }
 
     public Character getCurrentTurnsChar() {

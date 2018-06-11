@@ -8,6 +8,7 @@ public class Skill {
     private Character character;
     private String name;
     private String skillType;
+    private int hits;
     private ArrayList<String> type;
     private String attackType;
     private double powerMultiplier;
@@ -30,13 +31,15 @@ public class Skill {
     private String effectTarget;
     private double effectPowerMultiplier;
     private String effectStatMultiplier;
-    private String effectAttackType;    private int effectChance;
+    private String effectAttackType;
+    private int effectChance;
     private ArrayList<String> effectMessage;
     private ArrayList<String> enemyEffectMessage;
 
     public Character getCharacter(){return character;}
     public String getName(){ return name;}
     public String getSkillType() {return skillType;}
+    public int getHits() {return hits;}
     public ArrayList<String> getType(){ return type;}
     public String getAttackType() { return attackType; }
     public double getPowerMultiplier(){ return powerMultiplier;}
@@ -59,6 +62,7 @@ public class Skill {
     public String getEffectTarget() {return effectTarget;}
     public double getEffectPowerMultiplier(){ return effectPowerMultiplier;}
     public String getEffectStatMultiplier() {return effectStatMultiplier;}
+    public String getEffectAttackType() {return  effectAttackType;}
     public int getEffectChance() {return effectChance;}
     public ArrayList<String> getEffectMessage() {return effectMessage;}
     public ArrayList<String> getEnemyEffectMessage() {return enemyEffectMessage;}
@@ -66,6 +70,7 @@ public class Skill {
     public void setCharacter(Character c) {character = c;}
     public void setName(String n){ name = n;}
     public void setSkillType(String st) {skillType = st;}
+    public void setHits(int i) {hits = i;}
     public void setType(ArrayList<String> t){ type = t;}
     public void setAttackType(String at){attackType = at;}
     public void setPowerMultiplier(double p){ powerMultiplier = p;}
@@ -91,6 +96,7 @@ public class Skill {
     public void setEffectTarget(String et) {effectTarget = et;}
     public void setEffectPowerMultiplier(double p){ effectPowerMultiplier = p;}
     public void setEffectStatMultiplier(String s) {effectStatMultiplier = s;}
+    public void setEffectAttackType(String s) {effectAttackType = s;}
     public void setEffectChance(int ec) {effectChance = ec;}
     public void setEffectMessage(ArrayList<String> l) {effectMessage = l;}
     public void setEnemyEffectMessage(ArrayList<String> l) {enemyEffectMessage = l;}
@@ -105,12 +111,19 @@ public class Skill {
     public void addEnemyParryMessage(String s) {enemyParryMessage.add(s);}
     public void addEnemyEffectMessage(String s) {enemyEffectMessage.add(s);}
 
+    /*
+    para@: None
+
+    Calculates and returns the current accuracy of the skill by adding the skill's base accuracy,
+    the character's accuracy, and some random value between 1 and the character's luck (inclusively).
+
+     */
     public int currentAccuracy(){
         Random rand = new Random();
         int n = 0;
         try {
             if (character.getCurrentStat("Luck") > 0){
-                n = rand.nextInt(character.getCurrentStat("Luck"));
+                n = rand.nextInt(character.getCurrentStat("Luck"))+1;
             }
         } catch (Exception e) {
             System.out.println("BAD BOUNDS IN CURRENT ACCURACY OF CLASS SKILL");
@@ -118,12 +131,27 @@ public class Skill {
         return accuracy + character.getAccuracyBonus() + n;
     }
 
+    /*
+    para@: None
+
+    Calculates and returns the chance of the effect of this skill activating by adding
+    its base effectChance and some random value between 1 and the character's luck (inclusively).
+
+     */
     public int currentEffectChance(){
         Random rand = new Random();
         int n = rand.nextInt(character.currentLuck())+1;
         return effectChance + n;
     }
 
+    /*
+    para@: None
+
+    Place holder for the function that activates the skill.
+    Skill activates successfully if skill is not on cooldown.
+    Returns true when skill is successfully activated, meaning
+    the skill goes on its appropriate cooldown and the
+     */
     public boolean activate() {
         return true;
     }
